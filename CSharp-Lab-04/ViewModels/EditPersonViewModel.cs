@@ -52,7 +52,9 @@ namespace CSharp_Lab_04.ViewModels
                 {
                     Person person = new Person(FirstName, LastName, Email, BirthDate);
                     person.Validate();
-                    UserDataBase.users.Add(person);
+                    int currentIndex = UserDataBase.users.IndexOf(DataViewModel.SelectedPerson);
+                    UserDataBase.users.Remove(DataViewModel.SelectedPerson);
+                    UserDataBase.users.Insert(currentIndex, person);
                     MessageBox.Show("Person has been successfully updated");
                     _gotoDataView.Invoke();
                 });
