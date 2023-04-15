@@ -13,105 +13,16 @@ namespace CSharp_Lab_04.Models
 {
     internal class Person
     {
-        #region Fields
-        private string _firstName;
-        private string _lastName;
-        private string _email;
-        private DateTime _birthDate;
-
-        private readonly bool _isAdult;
-        private readonly bool _isBirthday;
-        private readonly string _westernZodiac;
-        private readonly string _chineseZodiac;
-
-        #endregion
-
         #region Properties
 
-        public string FirstName
-        {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-            }
-        }
-        public string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-            }
-        }
-        public string Email
-        {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                if (new EmailAddressAttribute().IsValid(value))
-                {
-                    _email = value;
-                }
-                else
-                {
-                    throw new InvalidEmailException(value);
-                }
-            }
-        }
-
-        public DateTime BirthDate
-        {
-            get
-            {
-                return _birthDate;
-            }
-            set
-            {
-                _birthDate = value;
-            }
-        }
-
-        public string SunSign
-        {
-            get
-            {
-                return _westernZodiac;
-            }
-        }
-
-        public string ChineseSign
-        {
-            get
-            {
-                return _chineseZodiac;
-            }
-        }
-
-        public bool IsBirthday
-        {
-            get
-            {
-                return _isBirthday;
-            }
-        }
-
-        public bool IsAdult
-        {
-            get
-            {
-                return _isAdult;
-            }
-        }
+        public string FirstName { get; }
+        public string LastName { get; }
+        public string Email { get; }
+        public DateTime BirthDate { get; }
+        public bool IsAdult { get; }
+        public string SunSign { get; }
+        public string ChineseSign { get; }
+        public bool IsBirthday { get; }
         #endregion
 
         internal Person()
@@ -120,27 +31,17 @@ namespace CSharp_Lab_04.Models
         }
         internal Person(string firstName, string lastName, string email, DateTime date)
         {
-            _firstName = firstName;
-            _lastName = lastName;
+            FirstName = firstName;
+            LastName = lastName;
             Email = email;
 
-            _birthDate = date;
+            BirthDate = date;
 
             int age = ComputeAge();
-            _isAdult = (age >= 18);
-            _isBirthday = CheckForBirthday();
-            _westernZodiac = ComputeWesternZodiac();
-            _chineseZodiac = CalculateChineseZodiac();
-        }
-
-        public Person(string firstName, string lastName, string email) :
-            this(firstName, lastName, email, DateTime.Today)
-        {
-        }
-
-        public Person(string firstName, string lastName, DateTime date) :
-            this(firstName, lastName, "empty@mail.ua", date)
-        {
+            IsAdult = (age >= 18);
+            IsBirthday = CheckForBirthday();
+            SunSign = ComputeWesternZodiac();
+            ChineseSign = CalculateChineseZodiac();
         }
 
         private int ComputeAge()
@@ -186,9 +87,9 @@ namespace CSharp_Lab_04.Models
             }
 
             Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            if (!emailRegex.IsMatch(_email))
+            if (!emailRegex.IsMatch(Email))
             {
-                throw new InvalidEmailException(_email);
+                throw new InvalidEmailException(Email);
             }
         }
 
@@ -204,7 +105,6 @@ namespace CSharp_Lab_04.Models
 
         private string ComputeWesternZodiac()
         {
-            Thread.Sleep(1000);
             int month = BirthDate.Month;
             int day = BirthDate.Day;
             string zodiacSign = "";
