@@ -24,20 +24,18 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="SORT BY" FontWeight="ExtraBlack"  VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding SortCasesEnum}"
-                      SelectedIndex="{Binding Sort, Mode=TwoWay}" />
+            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding SortingFields}" 
+                      Text="{Binding SortingBy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
 
         </Grid>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="7" />
                 <ColumnDefinition Width="110" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-           <Button Margin="5" Content="SEARCH " FontWeight="ExtraBlack" Command="{Binding FilterCommand}"></Button>
-            <TextBlock Text="by" Grid.Column="1" FontWeight="ExtraBlack"  VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <Button Margin="5" Content="FILTER BY" FontWeight="ExtraBlack" Command="{Binding FilterCommand}"></Button>
             <ComboBox Grid.Column="2" Margin="5" ItemsSource="{Binding FilterCasesEnum}"
 			          SelectedIndex="{Binding Filter, Mode=TwoWay}" />
             <TextBox Grid.Column="3" Margin="5" ToolTip="?" Text="{Binding FilterLetters, Mode=TwoWay}"/>

@@ -21,6 +21,10 @@ namespace CSharp_Lab_04.ViewModels
         private RelayCommand<object> _addPersonCommand;
         private RelayCommand<object> _editPersonCommand;
         private RelayCommand<object> _detelePersonCommand;
+
+        private RelayCommand<object> _applyFilters;
+        private RelayCommand<object> _cancelFilters;
+        private string _sorterName;
         #endregion
 
         #region Properties
@@ -45,6 +49,79 @@ namespace CSharp_Lab_04.ViewModels
 
         public static PersonViewModel? SelectedPerson { get; set; }
 
+        #endregion
+
+        #region Filtering and Sorting
+
+
+        public static List<string> SortingFields { get; } = new List<string>
+        {
+            "First name", "Last name", "Email", "Date of birth", "IsBirthday", "IsAdult", "Sun sign", "Chinese sign",
+            "No sorting"
+        };
+
+        public string SortingBy
+        {
+            get => _sorterName;
+            set
+            {
+                _sorterName = value;
+                PerformSorting();
+            }
+        }
+
+
+        private void PerformSorting()
+        {
+            switch (_sorterName)
+            {
+                case "First Name":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.Person.FirstName
+                                                                       select person);
+                    break;
+                case "Last name":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.LastName
+                                                                       select person);
+                    break;
+                case "Email":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.Email
+                                                                       select person);
+                    break;
+                case "Date of birth":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.Person.BirthDate
+                                                                       select person);
+                    break;
+                case "IsBirthday":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.IsBirthday
+                                                                       select person);
+                    break;
+                case "IsAdult":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.IsAdult
+                                                                       select person);
+                    break;
+                case "Sun sign":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.WesternSign
+                                                                       select person);
+                    break;
+                case "Chinese sign":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       orderby person.ChineseSign
+                                                                       select person);
+                    break;
+                default:
+                    People = new ObservableCollection<PersonViewModel>();
+                    foreach (var person in UserDataBase.users)
+                        _people.Add(new PersonViewModel(person));
+                    break;
+            }
+        }
 
         #endregion
 
@@ -59,6 +136,8 @@ namespace CSharp_Lab_04.ViewModels
 
         public RelayCommand<object> DeletePersonCommand =>
             _detelePersonCommand ??= new RelayCommand<object>(_ => DeletePerson());
+
+
 
         private void AddPerson()
         {
@@ -84,10 +163,9 @@ namespace CSharp_Lab_04.ViewModels
             }
 
             UserDataBase.users.Remove(SelectedPerson.Person);
-            People = new ObservableCollection<PersonViewModel>();
-            foreach (var person in UserDataBase.users)
-                _people.Add(new PersonViewModel(person));
+            People.Remove(SelectedPerson);
         }
+
 
         #endregion
 
