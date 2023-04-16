@@ -78,7 +78,7 @@ namespace CSharp_Lab_04.ViewModels
 
         public static List<string> SortingFields { get; } = new List<string>
         {
-            "First name", "Last name", "Email", "Birth date", "Is B-day?", "Is adult?", "Western zodiac", "Chinese zodiac",
+            "First name", "Last name", "Email", "Birth date", "Is adult?", "Western zodiac", "Chinese zodiac", "Is B-day?",
             "None"
         };
 
@@ -86,45 +86,29 @@ namespace CSharp_Lab_04.ViewModels
         {
             switch (_sorterName)
             {
-                case "First Name":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.FirstName
-                                                                       select person);
+                case "First name":
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.FirstName));
                     break;
                 case "Last name":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.LastName
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.LastName));
                     break;
                 case "Email":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.Email
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.Email));
                     break;
                 case "Birth date":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.Person.BirthDate
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.Person.BirthDate));
                     break;
                 case "Is B-day?":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.IsBirthday
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.IsBirthday));
                     break;
                 case "Is adult?":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.IsAdult
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.IsAdult));
                     break;
                 case "Western zodiac":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.WesternSign
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.WesternSign));
                     break;
                 case "Chinese zodiac":
-                    People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.ChineseSign
-                                                                       select person);
+                    People = new ObservableCollection<PersonViewModel>(_people.OrderBy(i => i.ChineseSign));
                     break;
                 default:
                     People = new ObservableCollection<PersonViewModel>();
@@ -142,7 +126,7 @@ namespace CSharp_Lab_04.ViewModels
 
             switch (_filterName)
             {
-                case "First Name":
+                case "First name":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        where person.FirstName.Equals(FilterValue)
                                                                        select person);
