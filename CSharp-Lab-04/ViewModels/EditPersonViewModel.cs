@@ -27,7 +27,7 @@ namespace CSharp_Lab_04.ViewModels
         public string FirstName { get; set; } = DataViewModel.SelectedPerson.FirstName;
         public string LastName { get; set; } = DataViewModel.SelectedPerson.LastName;
         public string Email { get; set; } = DataViewModel.SelectedPerson.Email;
-        public DateTime BirthDate { get; set; } = DataViewModel.SelectedPerson.BirthDate;
+        public DateTime BirthDate { get; set; } = DataViewModel.SelectedPerson.Person.BirthDate;
 
         public bool IsEnabled
         {
@@ -50,10 +50,25 @@ namespace CSharp_Lab_04.ViewModels
             {
                 await Task.Run(async () =>
                 {
-                    Person person = new Person(FirstName, LastName, Email, BirthDate);
-                    person.Validate();
-                    int currentIndex = UserDataBase.users.IndexOf(DataViewModel.SelectedPerson);
-                    UserDataBase.users.Remove(DataViewModel.SelectedPerson);
+                    IsEnabled = false;
+                    Person person;
+                    try
+                    {
+                        person = new Person(FirstName, LastName, Email, BirthDate);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                        IsEnabled = true;
+                        return;
+                    }
+                    if (person.IsIncomplete())
+                    {
+                        IsEnabled = true;
+                        return;
+                    }
+                    int currentIndex = UserDataBase.users.IndexOf(DataViewModel.SelectedPerson.Person);
+                    UserDataBase.users.Remove(DataViewModel.SelectedPerson.Person);
                     UserDataBase.users.Insert(currentIndex, person);
                     MessageBox.Show("Person has been successfully updated");
                     _gotoDataView.Invoke();

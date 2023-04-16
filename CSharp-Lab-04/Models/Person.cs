@@ -20,7 +20,7 @@ namespace CSharp_Lab_04.Models
         public string Email { get; }
         public DateTime BirthDate { get; }
         public bool IsAdult { get; }
-        public string SunSign { get; }
+        public string WesternSign { get; }
         public string ChineseSign { get; }
         public bool IsBirthday { get; }
         #endregion
@@ -33,14 +33,22 @@ namespace CSharp_Lab_04.Models
         {
             FirstName = firstName;
             LastName = lastName;
-            Email = email;
+
+            if (new EmailAddressAttribute().IsValid(email))
+            {
+                Email = email;
+            }
+            else
+            {
+                throw new InvalidEmailException(email);
+            }
 
             BirthDate = date;
 
             int age = ComputeAge();
             IsAdult = (age >= 18);
             IsBirthday = CheckForBirthday();
-            SunSign = ComputeWesternZodiac();
+            WesternSign = ComputeWesternZodiac();
             ChineseSign = CalculateChineseZodiac();
         }
 
@@ -72,25 +80,6 @@ namespace CSharp_Lab_04.Models
                 return true;
             }
             return false;
-        }
-
-        public void Validate()
-        {
-            if (DateTime.Today < BirthDate)
-            {
-                throw new UnbornException();
-            }
-
-            if (BirthDate.Year - DateTime.Today.Year > 135)
-            {
-                throw new TooOldException();
-            }
-
-            Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            if (!emailRegex.IsMatch(Email))
-            {
-                throw new InvalidEmailException(Email);
-            }
         }
 
         public bool IsIncomplete()

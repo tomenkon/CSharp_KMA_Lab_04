@@ -15,7 +15,7 @@ namespace CSharp_Lab_04.ViewModels
     class DataViewModel : INotifyPropertyChanged, INavigatable
     {
         #region Fields
-        private ObservableCollection<Person> _people;
+        private ObservableCollection<PersonViewModel> _people;
         private Action _goToEditView;
         private Action _goToAddView;
         private RelayCommand<object> _addPersonCommand;
@@ -26,13 +26,15 @@ namespace CSharp_Lab_04.ViewModels
         #region Properties
         public DataViewModel(Action goToAddView, Action goToEditView)
         {
-            People = new ObservableCollection<Person>(UserDataBase.users);
+            People = new ObservableCollection<PersonViewModel>();
+            foreach (var person in UserDataBase.users)
+                _people.Add(new PersonViewModel(person));
 
             _goToAddView = goToAddView;
             _goToEditView = goToEditView;
         }
 
-        public ObservableCollection<Person> People { 
+        public ObservableCollection<PersonViewModel> People { 
             get => _people;
             set 
             {
@@ -41,7 +43,7 @@ namespace CSharp_Lab_04.ViewModels
             }
         }
 
-        public static Person? SelectedPerson { get; set; }
+        public static PersonViewModel? SelectedPerson { get; set; }
 
 
         #endregion
@@ -81,8 +83,10 @@ namespace CSharp_Lab_04.ViewModels
                 return;
             }
 
-            UserDataBase.users.Remove(SelectedPerson);
-            People = new ObservableCollection<Person>(UserDataBase.users);
+            UserDataBase.users.Remove(SelectedPerson.Person);
+            People = new ObservableCollection<PersonViewModel>();
+            foreach (var person in UserDataBase.users)
+                _people.Add(new PersonViewModel(person));
         }
 
         #endregion

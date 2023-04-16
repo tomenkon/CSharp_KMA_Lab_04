@@ -60,7 +60,7 @@
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
                 <DataGridTextColumn Header="Birthday" Binding="{Binding BirthDate}" />
                 <DataGridCheckBoxColumn Header="Is an adult?" Binding="{Binding IsAdult, Mode=OneTime}" IsReadOnly="False" />
-                <DataGridTextColumn Header="Western Sign" Binding="{Binding SunSign}" />
+                <DataGridTextColumn Header="Western Sign" Binding="{Binding WesternSign}" />
                 <DataGridTextColumn Header="Chinese Sign" Binding="{Binding ChineseSign}" />
                 <DataGridCheckBoxColumn Header="Is B-Day today?" Binding="{Binding IsBirthday, Mode=OneWay}"
                                         IsReadOnly="False" />

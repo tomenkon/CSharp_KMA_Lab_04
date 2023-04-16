@@ -16,9 +16,10 @@ namespace CSharp_Lab_04.ViewModels
         public string BirthDate => _person.BirthDate.ToString("d");
         public bool IsAdult=> _person.IsAdult;
         public bool IsBirthday=> _person.IsBirthday;
-        public string WesternSign => _person.SunSign;
+        public string WesternSign => _person.WesternSign;
         public string ChineseSign => _person.ChineseSign;
 
+        internal Person Person { get => _person; set => _person = value; }
 
         public PersonViewModel(Person person)
         {
