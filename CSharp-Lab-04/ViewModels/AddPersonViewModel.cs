@@ -74,7 +74,7 @@ namespace CSharp_Lab_04.ViewModels
             }
 
             UserDataBase.users.Add(person);
-            MessageBox.Show("Person has been successfully added");
+            MessageBox.Show("Person successfully added!");
             _gotoDataView.Invoke();
         }
 

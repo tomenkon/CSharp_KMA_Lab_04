@@ -70,7 +70,7 @@ namespace CSharp_Lab_04.ViewModels
                     int currentIndex = UserDataBase.users.IndexOf(DataViewModel.SelectedPerson.Person);
                     UserDataBase.users.Remove(DataViewModel.SelectedPerson.Person);
                     UserDataBase.users.Insert(currentIndex, person);
-                    MessageBox.Show("Person has been successfully updated");
+                    MessageBox.Show("Person successfully edited!");
                     _gotoDataView.Invoke();
                 });
             }

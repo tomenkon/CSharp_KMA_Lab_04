@@ -75,7 +75,6 @@ namespace CSharp_Lab_04.ViewModels
 
         #region Filtering and Sorting
 
-
         public static List<string> SortingFields { get; } = new List<string>
         {
             "First name", "Last name", "Email", "Birth date", "Is adult?", "Western zodiac", "Chinese zodiac", "Is B-day?",
@@ -218,6 +217,7 @@ namespace CSharp_Lab_04.ViewModels
 
             UserDataBase.users.Remove(SelectedPerson.Person);
             People.Remove(SelectedPerson);
+            MessageBox.Show("Person successfully deleted!");
         }
 
         #endregion
