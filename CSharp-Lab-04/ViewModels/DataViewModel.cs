@@ -23,8 +23,8 @@ namespace CSharp_Lab_04.ViewModels
         private RelayCommand<object> _detelePersonCommand;
 
         private RelayCommand<object> _applyFilters;
-        private RelayCommand<object> _cancelFilters;
         private string _sorterName;
+        private string _filterName;
         #endregion
 
         #region Properties
@@ -49,16 +49,6 @@ namespace CSharp_Lab_04.ViewModels
 
         public static PersonViewModel? SelectedPerson { get; set; }
 
-        #endregion
-
-        #region Filtering and Sorting
-
-
-        public static List<string> SortingFields { get; } = new List<string>
-        {
-            "First name", "Last name", "Email", "Date of birth", "IsBirthday", "IsAdult", "Sun sign", "Chinese sign",
-            "No sorting"
-        };
 
         public string SortingBy
         {
@@ -70,6 +60,27 @@ namespace CSharp_Lab_04.ViewModels
             }
         }
 
+        public string FilterBy
+        {
+            get => _filterName;
+            set
+            {
+                _filterName = value;
+            }
+        }
+
+        public string FilterValue { get; set; }
+
+        #endregion
+
+        #region Filtering and Sorting
+
+
+        public static List<string> SortingFields { get; } = new List<string>
+        {
+            "First name", "Last name", "Email", "Birth date", "Is B-day?", "Is adult?", "Western zodiac", "Chinese zodiac",
+            "None"
+        };
 
         private void PerformSorting()
         {
@@ -77,7 +88,7 @@ namespace CSharp_Lab_04.ViewModels
             {
                 case "First Name":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
-                                                                       orderby person.Person.FirstName
+                                                                       orderby person.FirstName
                                                                        select person);
                     break;
                 case "Last name":
@@ -90,29 +101,85 @@ namespace CSharp_Lab_04.ViewModels
                                                                        orderby person.Email
                                                                        select person);
                     break;
-                case "Date of birth":
+                case "Birth date":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        orderby person.Person.BirthDate
                                                                        select person);
                     break;
-                case "IsBirthday":
+                case "Is B-day?":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        orderby person.IsBirthday
                                                                        select person);
                     break;
-                case "IsAdult":
+                case "Is adult?":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        orderby person.IsAdult
                                                                        select person);
                     break;
-                case "Sun sign":
+                case "Western zodiac":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        orderby person.WesternSign
                                                                        select person);
                     break;
-                case "Chinese sign":
+                case "Chinese zodiac":
                     People = new ObservableCollection<PersonViewModel>(from person in _people
                                                                        orderby person.ChineseSign
+                                                                       select person);
+                    break;
+                default:
+                    People = new ObservableCollection<PersonViewModel>();
+                    foreach (var person in UserDataBase.users)
+                        _people.Add(new PersonViewModel(person));
+                    break;
+            }
+        }
+
+        private void PerformFiltering()
+        {
+            People = new ObservableCollection<PersonViewModel>();
+            foreach (var person in UserDataBase.users)
+                _people.Add(new PersonViewModel(person));
+
+            switch (_filterName)
+            {
+                case "First Name":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.FirstName.Equals(FilterValue)
+                                                                       select person);
+                    break;
+                case "Last name":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.LastName.Equals(FilterValue)
+                                                                       select person);
+                    break;
+                case "Email":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.Email.Equals(FilterValue)
+                                                                       select person);
+                    break;
+                case "Birth date":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.BirthDate.Equals(FilterValue)
+                                                                       select person);
+                    break;
+                case "Is B-day?":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.IsBirthday
+                                                                       select person);
+                    break;
+                case "Is adult?":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.IsAdult
+                                                                       select person);
+                    break;
+                case "Western zodiac":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.WesternSign.Equals(FilterValue)
+                                                                       select person);
+                    break;
+                case "Chinese zodiac":
+                    People = new ObservableCollection<PersonViewModel>(from person in _people
+                                                                       where person.ChineseSign.Equals(FilterValue)
                                                                        select person);
                     break;
                 default:
@@ -136,6 +203,9 @@ namespace CSharp_Lab_04.ViewModels
 
         public RelayCommand<object> DeletePersonCommand =>
             _detelePersonCommand ??= new RelayCommand<object>(_ => DeletePerson());
+        
+        public RelayCommand<object> ApplyFilterCommand =>
+            _applyFilters ??= new RelayCommand<object>(_ => PerformFiltering());
 
 
 
@@ -165,7 +235,6 @@ namespace CSharp_Lab_04.ViewModels
             UserDataBase.users.Remove(SelectedPerson.Person);
             People.Remove(SelectedPerson);
         }
-
 
         #endregion
 

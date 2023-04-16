@@ -31,14 +31,16 @@
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Margin="5" Content="FILTER BY" FontWeight="ExtraBlack" Command="{Binding FilterCommand}"></Button>
-            <ComboBox Grid.Column="2" Margin="5" ItemsSource="{Binding FilterCasesEnum}"
-			          SelectedIndex="{Binding Filter, Mode=TwoWay}" />
-            <TextBox Grid.Column="3" Margin="5" ToolTip="?" Text="{Binding FilterLetters, Mode=TwoWay}"/>
+            <TextBlock Grid.Column="0" Text="FILTER BY" FontWeight="ExtraBlack"  VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding SortingFields}" 
+                      Text="{Binding FilterBy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+            <TextBox Grid.Column="2" Margin="5" Text="{Binding FilterValue, Mode=TwoWay}"/>
+            <Button Grid.Column="3" Margin="5" Content="APPLY" FontWeight="ExtraBlack" Command="{Binding ApplyFilterCommand}"></Button>
 
         </Grid>
         <Grid Grid.Column="2">
